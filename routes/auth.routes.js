@@ -6,6 +6,7 @@ const router = Router();
 
 // Step 2: Define auth routes
 router.get("/register", authControllers.getRegisterPage);
+router.post("/register", authControllers.postRegisterPage);
 
 router.get("/", authControllers.getHomePage);
 

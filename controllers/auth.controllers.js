@@ -1,3 +1,7 @@
+import { formModel } from "../mongoose/mongoose.js";
+
+
+
 export const getRegisterPage = (req, res) => {
   // acces login file form views/auth/register
   res.render("auth/register");
@@ -7,6 +11,34 @@ export const getLoginPage = (req, res) => {
   // acces login file form views/auth/login
   res.render("auth/login");
 };
+
+// send data from registation form to mangodn 
+export const postRegisterPage = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    // firt we check that id is alreadt avlaible or not 
+      const userExists = await formModel.findOne({ email: email });
+    
+     if (userExists) {
+      console.log("User already exists");
+      return res.redirect("/register"); // redirect back if user exists
+    }
+
+    // Create and save the new user
+    const newUser = new formModel({ name, email, password });
+    const savedUser = await newUser.save();
+    
+    res.redirect("/login")
+    
+  } catch (error) {
+    console.error("Registration error:", error);
+    res.status(500).json({ message: "Internal server error", error: error});
+  }
+};
+
+
+
+
 
 //================================
 //  old way to get cookes and set 
@@ -57,3 +89,5 @@ export const postLogin = (req,res)=>{
    // if we will click login button then the page move to home page 
   res.redirect("/")
 }
+
+

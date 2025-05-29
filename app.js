@@ -9,6 +9,7 @@ const PORT = 3005
 // when me give value from input tag and that data comes in 
 // URL-encoded format and "urlencoded store all data in req.body"
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());  
 // app.use(express.static("public")); // Uncomment if serving static files
 
 // View engine
