@@ -3,7 +3,7 @@ export const getRegisterPage = (req, res) => {
 };
 
 export const getLoginPage = (req, res) => {
-  //
+  // login rout
   res.render("auth/login");
 };
 
@@ -16,5 +16,7 @@ res.render("index");
 export const postLogin = (req,res)=>{
    // set cookies
    res.setHeader("Set-Cookie","isLoggedIn=true; path=/;")
+    
+   // if we will click login button then the page move to home page 
   res.redirect("/")
 }
