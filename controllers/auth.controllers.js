@@ -75,8 +75,31 @@ export const getHomePage = (req,res)=>{
 }
 
 
+// login form
+export const postLogin = async(req,res)=>{
+try {
+  const {email,password} = req.body
+  const userExists = await formModel.findOne({email})
+  console.log("user",userExists)
+ if(!userExists){
+    
+    res.redirect("/login")
+}
+ // now for checking password exist or not 
+ if(userExists.password !== password) {
+    res.redirect("/login")
+ }
 
-export const postLogin = (req,res)=>{
+} catch (error) {
+   console.error("Login error:", error);
+    res.status(500).json({ message: "Internal server error", error: error});
+}
+
+
+
+
+
+
    // set cookies and if we set path="/" like that then cookie take true every page
    // that's why we shuld give like that path="/" 
    // this is old way to get cookie
@@ -84,9 +107,7 @@ export const postLogin = (req,res)=>{
 
   // this is new way to get cookie
   res.cookie("isLoggedIn",true)
-    
-  
-   // if we will click login button then the page move to home page 
+     // if we will click login button then the page move to home page 
   res.redirect("/")
 }
 
