@@ -1,6 +1,7 @@
 import express from "express";
 
-import { authRoutes } from "./routes/auth.routes.js"; // ✅ Fixed typo: "auth.riutes.js" ➜ "auth.routes.js"
+import { authRoutes } from "./routes/auth.routes.js"; // 
+import cookieParser from "cookie-parser";
 
 const app = express();
 const PORT = 3005
@@ -13,9 +14,13 @@ app.use(express.urlencoded({ extended: true }));
 // View engine
 app.set("view engine", "ejs");
 
-// Routes
+// we use cookes
+app.use(cookieParser())
 
+
+// Routes
 app.use(authRoutes);
+
 
 // Start server
 app.listen(PORT, () => {
