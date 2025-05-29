@@ -8,8 +8,13 @@
 </head>
 <body class="bg-gray-100 text-gray-800">
  <%- include("./partials/header") %>
-  
  
+ <!-- we can directly access value of node to ejs file -->
+ <% if(isLoggedIn){%> 
+  <h2>you are logged In</h2>
+ <% } else{ %>
+  <h2>you are not logged In</h2>
+  <% } %>
 
   <main class="p-6 text-center">
     <div class="bg-blue-100 p-10 rounded-lg mb-6">
