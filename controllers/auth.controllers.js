@@ -1,6 +1,6 @@
 
 import { formModel } from "../mongoose/mongoose.js";
-import { comparePassword, hashPassword } from "../services/auth.services.js";
+import { comparePassword, generateToken, hashPassword } from "../services/auth.services.js";
 
 
 
@@ -111,7 +111,21 @@ const isPasswordValid = await comparePassword(password,userExists.password)
   //  res.setHeader("Set-Cookie","isLoggedIn=true; path=/")
 
   // this is new way to get cookie
-  res.cookie("isLoggedIn",true)
+  // res.cookie("isLoggedIn",true)
+
+
+////  now we use jwd 
+// step 1 we creat genratetoken which value we want to show to user
+const token = generateToken({
+  id : userExists.id,
+  name : userExists.name,
+  email : userExists.email
+})
+
+// first give token name we can give anything what i want to give name
+// second give token which we want to show to user  
+res.cookie("access_token",token)
+
      // if we will click login button then the page move to home page 
   res.redirect("/")
 
@@ -122,5 +136,6 @@ const isPasswordValid = await comparePassword(password,userExists.password)
 
 
 }
-
+// after that go to congole and check in appliction in chooke and there this cookie 
+// value avalible
 
