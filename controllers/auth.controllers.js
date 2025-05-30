@@ -1,4 +1,8 @@
+
 import { formModel } from "../mongoose/mongoose.js";
+import { comparePassword, hashPassword } from "../services/auth.services.js";
+
+
 
 
 
@@ -7,15 +11,13 @@ export const getRegisterPage = (req, res) => {
   res.render("auth/register");
 };
 
-export const getLoginPage = (req, res) => {
-  // acces login file form views/auth/login
-  res.render("auth/login");
-};
+
 
 // send data from registation form to mangodn 
 export const postRegisterPage = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    
     // firt we check that id is alreadt avlaible or not 
       const userExists = await formModel.findOne({ email: email });
     
@@ -24,11 +26,16 @@ export const postRegisterPage = async (req, res) => {
       return res.redirect("/register"); // redirect back if user exists
     }
 
+// this this is hashing function who there is services folder
+const hashedPassword = await hashPassword (password)
+
     // Create and save the new user
-    const newUser = new formModel({ name, email, password });
-    const savedUser = await newUser.save();
+    // second the we will give value after hashad then we have to give password:hashedPassoerd
+    // because key and value both are not same that's why.
+    const newUser = new formModel({ name, email, password: hashedPassword });
+     await newUser.save();
     
-    res.redirect("/login")
+     res.redirect("/login")
     
   } catch (error) {
     console.error("Registration error:", error);
@@ -74,6 +81,11 @@ export const getHomePage = (req,res)=>{
     return res.render("index",{ isLoggedIn})
 }
 
+// get login
+export const getLoginPage = (req, res) => {
+  // acces login file form views/auth/login
+  res.render("auth/login");
+};
 
 // login form
 export const postLogin = async(req,res)=>{
@@ -81,26 +93,19 @@ try {
   const {email,password} = req.body
   const userExists = await formModel.findOne({email})
   console.log("user",userExists)
- if(!userExists){
-    
-    res.redirect("/login")
-}
+
+ if(!userExists) return res.redirect("/login")
+
+
+// bcrypt.compare(plainTextPassword,hashedPassword);
+const isPasswordValid = await comparePassword(password,userExists.password)
+
  // now for checking password exist or not 
- if(userExists.password !== password) {
-    res.redirect("/login")
- }
-
-} catch (error) {
-   console.error("Login error:", error);
-    res.status(500).json({ message: "Internal server error", error: error});
-}
+ if(! isPasswordValid) return res.redirect("/login") 
 
 
 
-
-
-
-   // set cookies and if we set path="/" like that then cookie take true every page
+    // set cookies and if we set path="/" like that then cookie take true every page
    // that's why we shuld give like that path="/" 
    // this is old way to get cookie
   //  res.setHeader("Set-Cookie","isLoggedIn=true; path=/")
@@ -109,6 +114,13 @@ try {
   res.cookie("isLoggedIn",true)
      // if we will click login button then the page move to home page 
   res.redirect("/")
+
+} catch (error) {
+   console.error("Login error:", error);
+    res.status(500).json({ message: "Internal server error", error: error});
+}
+
+
 }
 
 
