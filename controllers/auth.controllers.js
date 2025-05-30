@@ -77,8 +77,8 @@ const hashedPassword = await hashPassword (password)
 //=============================
 export const getHomePage = (req,res)=>{
 
-   let isLoggedIn =   req.cookies.isLoggedIn;
-    return res.render("index",{ isLoggedIn})
+   
+    return res.render("index")
 }
 
 // get login
