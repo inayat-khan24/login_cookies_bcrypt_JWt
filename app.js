@@ -2,6 +2,7 @@ import express from "express";
 
 import { authRoutes } from "./routes/auth.routes.js"; // 
 import cookieParser from "cookie-parser";
+import { verifyAuthentication } from "./middlewares/verify.middlewares.js";
 
 const app = express();
 const PORT = 3005
@@ -17,6 +18,9 @@ app.set("view engine", "ejs");
 
 // we use cookes
 app.use(cookieParser())
+
+// this is must be after cookieParser middleware
+app.use(verifyAuthentication)
 
 
 // Routes

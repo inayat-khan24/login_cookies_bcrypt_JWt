@@ -1,7 +1,7 @@
-import { verifyJWTToken } from "../services/auth.services"
+import { verifyJWTToken } from "../services/auth.services.js"
 
 export const  verifyAuthentication = (req,res,next)=>{
-    console.log(req)
+  
 const token = req.cookies.access_token  // that will get us in cookie we can check in appliction cookie
 
 if(!token){
@@ -16,7 +16,7 @@ if(!token){
        
         const decodedToken = verifyJWTToken(token)
       req.user = decodedToken
-      console.log(`req.user:`,req.user.password)
+      console.log("req.user", req.user)
 
     } catch (error) {
         req.user = null
