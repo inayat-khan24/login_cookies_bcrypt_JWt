@@ -139,3 +139,10 @@ res.cookie("access_token",token)
 // after that go to congole and check in appliction in chooke and there this cookie 
 // value avalible
 
+
+export const getme= async(req,res)=>{
+if(!req.user)  return res.send("Not logged in ")
+
+  return res.send(`<h1>hey ${req.user.name} - ${req.user.email} `)
+
+}

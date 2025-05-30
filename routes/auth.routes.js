@@ -17,6 +17,8 @@ router.get("/", authControllers.getHomePage);
 router.route("/login")
  .get(authControllers.getLoginPage).post(authControllers.postLogin);
 
+ //* we make another route
+ router.route('/me').get(authControllers.getme) 
 
 // Step 5: Export the router
 export const authRoutes = router;
