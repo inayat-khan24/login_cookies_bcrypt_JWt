@@ -7,6 +7,7 @@ import { comparePassword, generateToken, hashPassword } from "../services/auth.s
 
 
 export const getRegisterPage = (req, res) => {
+  
   // acces login file form views/auth/register
   res.render("auth/register");
 };
@@ -15,6 +16,7 @@ export const getRegisterPage = (req, res) => {
 
 // send data from registation form to mangodn 
 export const postRegisterPage = async (req, res) => {
+  if(req.user) return res.redirect("/")   //* if user exist then go direact home page
   try {
     const { name, email, password } = req.body;
     
@@ -83,13 +85,17 @@ export const getHomePage = (req,res)=>{
 
 // get login
 export const getLoginPage = (req, res) => {
+  if(req.user) return res.redirect("/")   //* if user exist then go direact home page
   // acces login file form views/auth/login
   res.render("auth/login");
 };
 
 // login form
 export const postLogin = async(req,res)=>{
-try {
+ if(req.user) return res.redirect("/")   //* if user exist then go direact home page
+
+  try {
+
   const {email,password} = req.body
   const userExists = await formModel.findOne({email})
   console.log("user",userExists)
@@ -140,9 +146,16 @@ res.cookie("access_token",token)
 // value avalible
 
 
-export const getme= async(req,res)=>{
+export const getme = async(req,res)=>{
 if(!req.user)  return res.send("Not logged in ")
 
   return res.send(`<h1>hey ${req.user.name} - ${req.user.email} `)
 
+}
+
+
+export const logoutUser = (req,res)=>{
+res.clearCookie("access_token")  //* for delete cookie to logout page
+
+  res.redirect("/login")
 }

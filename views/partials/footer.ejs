@@ -35,7 +35,11 @@
     <div class="footer-links">
         <a href="/">Home</a>
     <a href="#about">About</a>
-       <a href="/login">Login</a>
+   <% if(user){ %>
+    <a href="/logout">logout</a>
+   <% } else { %>
+       <a href="/login">Login</a> 
+      <% } %>
     <a href="/register">registration</a>
     </div>
     <div class="copyright">

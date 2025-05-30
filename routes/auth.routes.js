@@ -20,5 +20,7 @@ router.route("/login")
  //* we make another route
  router.route('/me').get(authControllers.getme) 
 
+ router.route('/logout').get(authControllers.logoutUser) 
+
 // Step 5: Export the router
 export const authRoutes = router;
